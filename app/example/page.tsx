@@ -1,5 +1,6 @@
 import {
   Table,
+  TableBody,
   TableCell,
   TableHead,
   TableHeader,
@@ -29,14 +30,16 @@ export default function ExamplePage() {
             <TableHead></TableHead>
           </TableRow>
         </TableHeader>
-        {createTableRows().map((row) => (
-          <TableRow key={row.number}>
-            <TableCell className="font-mono font-semibold text-gray-500">
-              {row.number}
-            </TableCell>
-            <TableCell>{row.content}</TableCell>
-          </TableRow>
-        ))}
+        <TableBody>
+          {createTableRows().map((row) => (
+            <TableRow key={row.number}>
+              <TableCell className="font-mono font-semibold text-gray-500">
+                {row.number}
+              </TableCell>
+              <TableCell>{row.content}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
       </Table>
     </main>
   );
