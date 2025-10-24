@@ -15,6 +15,7 @@ import { useState } from "react";
 import { FaArrowDown } from "react-icons/fa";
 import { FaInbox, FaPlus, FaXmark } from "react-icons/fa6";
 import { GoSidebarCollapse, GoSidebarExpand } from "react-icons/go";
+import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 
 type RollTableRow = {
@@ -32,11 +33,56 @@ export default function ExamplePage() {
     return rows;
   };
   const [tableRows, setTableRows] = useState(createTableRows(20));
-  const [isQueueCollapsed, setIsQueueCollapsed] = useState(false);
   const [tableQueue, setTableQueue] = useState<string[]>(["Lorem", "ipsum"]);
+  const [isQueueCollapsed, setIsQueueCollapsed] = useState(true);
   const [showQueueForm, setShowQueueForm] = useState(false);
+  const [queueInputValue, setQueueInputValue] = useState("");
+
+  const addToQueue = () => {
+    if (queueInputValue.trim()) {
+      setTableQueue((prevQueue) => [queueInputValue.trim(), ...prevQueue]);
+      setQueueInputValue("");
+      setShowQueueForm(false);
+    }
+  };
+
+  const removeFromQueue = (value: string) => {
+    setTableQueue(tableQueue.filter((rowValue) => rowValue !== value));
+  };
+
+  const handleQueueInputKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      addToQueue();
+    }
+  };
+
   const removeRow = (rowToRemove: RollTableRow) => {
-    setTableRows(tableRows.filter((tableRow) => tableRow !== rowToRemove)); // TODO: Add random from queue
+    // Add random item from queue if queue has items
+    if (tableQueue.length > 0) {
+      const randomIndex = Math.floor(Math.random() * tableQueue.length);
+      const randomQueueItem = tableQueue[randomIndex];
+
+      // Replace the removed row with a new row using the same number
+      const newRow: RollTableRow = {
+        number: rowToRemove.number,
+        content: randomQueueItem,
+      };
+
+      // Replace the row instead of removing it
+      setTableRows((prevRows) =>
+        prevRows.map((row) => (row === rowToRemove ? newRow : row))
+      );
+
+      // Remove the used item from queue
+      setTableQueue((prevQueue) =>
+        prevQueue.filter((_, index) => index !== randomIndex)
+      );
+      toast("Randomly added from queue");
+    } else {
+      // If no queue items, just remove the row
+      // setTableRows(tableRows.filter((tableRow) => tableRow !== rowToRemove));
+      toast.warning("Nothing left in queue!");
+    }
   };
   return (
     <>
@@ -90,6 +136,7 @@ export default function ExamplePage() {
               size="icon"
               variant="outline"
               onClick={() => setIsQueueCollapsed(!isQueueCollapsed)}
+              title="Show queue"
             >
               <GoSidebarExpand />
             </Button>
@@ -100,6 +147,7 @@ export default function ExamplePage() {
                   size="icon"
                   variant="outline"
                   onClick={() => setIsQueueCollapsed(!isQueueCollapsed)}
+                  title="Hide queue"
                 >
                   <GoSidebarCollapse />
                 </Button>
@@ -119,21 +167,47 @@ export default function ExamplePage() {
               </div>
               {showQueueForm && (
                 <div className="my-3 flex gap-2">
-                  <Input className="bg-white" placeholder="Add Item to Queue" />
-                  <Button size="icon" variant={"outline"}>
+                  <Input
+                    className="bg-white"
+                    placeholder="Add Item to Queue"
+                    value={queueInputValue}
+                    onChange={(e) => setQueueInputValue(e.target.value)}
+                    onKeyDown={handleQueueInputKeyDown}
+                  />
+                  <Button
+                    size="icon"
+                    variant={"outline"}
+                    onClick={addToQueue}
+                    disabled={!queueInputValue.trim()}
+                  >
                     <FaArrowDown />
                   </Button>
                 </div>
               )}
-              <Table>
-                <TableBody>
-                  {tableQueue.map((value) => (
-                    <TableRow key={value}>
-                      <TableCell>{value}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              {tableQueue.length > 0 ? (
+                <Table>
+                  <TableBody>
+                    {tableQueue.map((value) => (
+                      <TableRow className="flex group" key={value}>
+                        <TableCell className="flex-1">{value}</TableCell>
+                        <TableCell>
+                          <Button
+                            className="invisible group-hover:visible"
+                            size="icon-sm"
+                            onClick={() => removeFromQueue(value)}
+                          >
+                            <FaXmark />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              ) : (
+                <div className="font-mono italic opacity-50 text-center mt-4">
+                  Queue is empty
+                </div>
+              )}
             </>
           )}
         </div>
