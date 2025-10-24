@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 const fontInter = Inter({
   variable: "--font-inter",
@@ -30,6 +31,7 @@ export default function RootLayout({
         className={`${fontInter.variable} ${fontJetBrainsMono.variable} antialiased`}
       >
         {children}
+        <Toaster position="top-center" />
       </body>
     </html>
   );
