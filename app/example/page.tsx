@@ -14,6 +14,8 @@ import {
 import { useState } from "react";
 import { FaArrowDown } from "react-icons/fa";
 import { FaInbox, FaPlus, FaXmark } from "react-icons/fa6";
+import { GoSidebarCollapse, GoSidebarExpand } from "react-icons/go";
+import { twMerge } from "tailwind-merge";
 
 type RollTableRow = {
   number: number;
@@ -30,16 +32,22 @@ export default function ExamplePage() {
     return rows;
   };
   const [tableRows, setTableRows] = useState(createTableRows(20));
+  const [isQueueCollapsed, setIsQueueCollapsed] = useState(false);
   const [tableQueue, setTableQueue] = useState<string[]>(["Lorem", "ipsum"]);
   const [showQueueForm, setShowQueueForm] = useState(false);
   const removeRow = (rowToRemove: RollTableRow) => {
-    setTableRows(tableRows.filter((tableRow) => tableRow !== rowToRemove));
+    setTableRows(tableRows.filter((tableRow) => tableRow !== rowToRemove)); // TODO: Add random from queue
   };
   return (
     <>
       <Header />
       <main className="container mx-auto grid grid-cols-12 gap-4">
-        <div className="col-span-8">
+        <div
+          className={twMerge(
+            "col-span-12",
+            isQueueCollapsed ? "lg:col-span-11" : "lg:col-span-8"
+          )}
+        >
           <Table>
             <TableHeader>
               <TableRow>
@@ -70,39 +78,64 @@ export default function ExamplePage() {
             </TableBody>
           </Table>
         </div>
-        <div className="col-span-4">
-          <div className="flex flex-col">
-            <h3 className="flex items-center">
-              <FaInbox className="mr-2" />
-              <span className="font-semibold text-lg">Queue</span>
-              <Button
-                className="ml-auto"
-                size="icon"
-                variant={"outline"}
-                onClick={() => setShowQueueForm(!showQueueForm)}
-                title="Add Item to Queue"
-              >
-                <FaPlus />
-              </Button>
-            </h3>
-            {showQueueForm && (
-              <div className="my-3 flex gap-2">
-                <Input placeholder="Add Item to Queue" />
-                <Button size="icon" variant={"outline"}>
-                  <FaArrowDown />
+        <div
+          className={twMerge(
+            "hidden lg:flex lg:flex-col border bg-gray-50 p-4 rounded",
+            isQueueCollapsed ? "lg:col-span-1" : "lg:col-span-4"
+          )}
+        >
+          {isQueueCollapsed ? (
+            <Button
+              className="mx-auto"
+              size="icon"
+              variant="outline"
+              onClick={() => setIsQueueCollapsed(!isQueueCollapsed)}
+            >
+              <GoSidebarExpand />
+            </Button>
+          ) : (
+            <>
+              <div className="flex gap-4">
+                <Button
+                  size="icon"
+                  variant="outline"
+                  onClick={() => setIsQueueCollapsed(!isQueueCollapsed)}
+                >
+                  <GoSidebarCollapse />
+                </Button>
+                <h3 className="flex items-center">
+                  <FaInbox className="mr-2" />
+                  <span className="font-semibold text-lg">Queue</span>
+                </h3>
+                <Button
+                  className="ml-auto"
+                  size="icon"
+                  variant={"outline"}
+                  onClick={() => setShowQueueForm(!showQueueForm)}
+                  title="Add Item to Queue"
+                >
+                  <FaPlus />
                 </Button>
               </div>
-            )}
-            <Table>
-              <TableBody>
-                {tableQueue.map((value) => (
-                  <TableRow key={value}>
-                    <TableCell>{value}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+              {showQueueForm && (
+                <div className="my-3 flex gap-2">
+                  <Input className="bg-white" placeholder="Add Item to Queue" />
+                  <Button size="icon" variant={"outline"}>
+                    <FaArrowDown />
+                  </Button>
+                </div>
+              )}
+              <Table>
+                <TableBody>
+                  {tableQueue.map((value) => (
+                    <TableRow key={value}>
+                      <TableCell>{value}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </>
+          )}
         </div>
       </main>
     </>
