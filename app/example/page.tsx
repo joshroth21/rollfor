@@ -11,10 +11,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  ArrowDown,
+  Inbox,
+  PanelRightClose,
+  PanelRightOpen,
+  Plus,
+  X,
+} from "lucide-react";
 import { useState } from "react";
-import { FaArrowDown } from "react-icons/fa";
-import { FaInbox, FaPlus, FaXmark } from "react-icons/fa6";
-import { GoSidebarCollapse, GoSidebarExpand } from "react-icons/go";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 
@@ -116,7 +121,7 @@ export default function ExamplePage() {
                       onClick={() => removeRow(row)}
                       title="Remove"
                     >
-                      <FaXmark />
+                      <X />
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -138,7 +143,7 @@ export default function ExamplePage() {
               onClick={() => setIsQueueCollapsed(!isQueueCollapsed)}
               title="Show queue"
             >
-              <GoSidebarExpand />
+              <PanelRightOpen />
             </Button>
           ) : (
             <>
@@ -149,10 +154,10 @@ export default function ExamplePage() {
                   onClick={() => setIsQueueCollapsed(!isQueueCollapsed)}
                   title="Hide queue"
                 >
-                  <GoSidebarCollapse />
+                  <PanelRightClose />
                 </Button>
                 <h3 className="flex items-center">
-                  <FaInbox className="mr-2" />
+                  <Inbox className="mr-2" />
                   <span className="font-semibold text-lg">Queue</span>
                 </h3>
                 <Button
@@ -162,7 +167,7 @@ export default function ExamplePage() {
                   onClick={() => setShowQueueForm(!showQueueForm)}
                   title="Add Item to Queue"
                 >
-                  <FaPlus />
+                  <Plus />
                 </Button>
               </div>
               {showQueueForm && (
@@ -180,7 +185,7 @@ export default function ExamplePage() {
                     onClick={addToQueue}
                     disabled={!queueInputValue.trim()}
                   >
-                    <FaArrowDown />
+                    <ArrowDown />
                   </Button>
                 </div>
               )}
@@ -196,7 +201,7 @@ export default function ExamplePage() {
                             size="icon-sm"
                             onClick={() => removeFromQueue(value)}
                           >
-                            <FaXmark />
+                            <X />
                           </Button>
                         </TableCell>
                       </TableRow>
