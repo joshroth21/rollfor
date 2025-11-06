@@ -15,13 +15,15 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Table: Story = {
   args: {
-    tableName: 'Sample Table',
-    tableIcon: 'table',
-    tableRows: [{
-      number: 1,
-      value: "Lorem ipsum"
-    }]
+    tableName: "Sample Table",
+    tableIcon: "table",
+    tableRows: [
+      {
+        number: 1,
+        value: "Lorem ipsum",
+      },
+    ],
   },
 };

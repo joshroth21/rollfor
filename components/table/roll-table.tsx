@@ -1,7 +1,7 @@
 "use client";
 
 import { Settings } from "lucide-react";
-import { DynamicIcon, IconName } from "lucide-react/dynamic";
+import { DynamicIcon } from "lucide-react/dynamic";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -14,23 +14,13 @@ import {
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "../ui/table";
 import NewRow from "./new-row";
-
-type RollTableRow = {
-  number: number;
-  value: string;
-};
-
-interface RollTableProps {
-  tableName: string;
-  tableIcon?: IconName;
-  tableRows: RollTableRow[];
-}
+import { RollTableProps } from "./roll-table.types";
+import RollTableRow from "./row-table-row";
 
 export default function RollTable({
   tableName,
@@ -60,12 +50,7 @@ export default function RollTable({
           </TableHeader>
           <TableBody>
             {tableRows.map((row) => (
-              <TableRow key={row.number}>
-                <TableCell className="font-mono font-semibold">
-                  {row.number}
-                </TableCell>
-                <TableCell>{row.value}</TableCell>
-              </TableRow>
+              <RollTableRow key={row.number} row={row} />
             ))}
           </TableBody>
         </Table>
