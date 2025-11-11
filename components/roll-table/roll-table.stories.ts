@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import RollTable from "./roll-table";
 
 const meta = {
-  title: "RollTable/Roll Table",
+  title: "RollTable",
   component: RollTable,
   tags: ["autodocs"],
   parameters: {

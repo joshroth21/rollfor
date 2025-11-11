@@ -18,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import NewRow from "./new-row";
+import NewRowButton from "./new-row-button";
 import { RollTableProps } from "./roll-table.types";
 import RollTableRow from "./row-table-row";
 
@@ -44,8 +44,9 @@ export default function RollTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>#</TableHead>
+              <TableHead className="w-9">#</TableHead>
               <TableHead></TableHead>
+              <TableHead className="w-9"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -56,7 +57,7 @@ export default function RollTable({
         </Table>
       </CardContent>
       <CardFooter>
-        <NewRow />
+        <NewRowButton />
       </CardFooter>
     </Card>
   );

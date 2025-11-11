@@ -2,11 +2,8 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import RollTableRow from "./row-table-row";
 
 const meta = {
-  title: "RollTable/Roll Table/Row",
+  title: "RollTable/Row",
   component: RollTableRow,
-  parameters: {
-    layout: "fullscreen",
-  },
   args: {},
 } satisfies Meta<typeof RollTableRow>;
 
