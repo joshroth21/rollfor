@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Inbox } from "lucide-react";
 import NewRowButton from "../roll-table/new-row-button";
 
@@ -13,8 +13,10 @@ export default function QueueTable() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <NewRowButton label="New item" />
       </CardContent>
+	  <CardFooter>
+        <NewRowButton label="New item" />
+	  </CardFooter>
     </Card>
   );
 }
