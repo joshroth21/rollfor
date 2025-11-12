@@ -11,4 +11,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Queue: Story = {
+  args: {
+    tableRows: ["Lorem ipsum", "dolor sit"]
+  }
 };
